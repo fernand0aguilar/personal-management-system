@@ -2,12 +2,13 @@
        data-table="true" width="100%">
     <thead>
     <tr>
-        <td class="d-none">id</td>
-        <td>Target</td>
-        <td>Amount</td>
-        <td>Information</td>
-        <td>Date</td>
-        <td>Actions</td>
+        <td class="d-none">{{ 'datatables.table.id' | trans }}</td>
+        <td>{{ 'payments.moneyOwed.table.target' | trans }}</td>
+        <td>{{ 'payments.moneyOwed.table.amount' | trans }}</td>
+        <td>{{ 'payments.moneyOwed.table.information' | trans }}</td>
+        <td>{{ 'payments.moneyOwed.table.date' | trans }}</td>
+        <td>{{ 'payments.moneyOwed.table.currency' | trans }}</td>
+        <td>{{ 'datatables.table.actions' | trans }}</td>
     </tr>
     </thead>
     <tbody>
@@ -19,17 +20,30 @@
             <td class="target">       {{ record.target }}     </td>
             <td class="amount">       {{ record.amount }}     </td>
             <td class="information">  {{ record.information}} </td>
-            <td class="date">
-                {% if record.date is not null %}
-                    {{ record.date | date('Y-m-d') }}
-                {% endif %}
+            <td class="">
+                    <span class="date">
+                        {% include 'page-elements/components/forms/input-datepicker.twig' with {
+                            "value"     : ( record.date is not null ? record.date | date('Y-m-d') : "") ,
+                            "disabled"  : true
+                        } %}
+                    </span>
             </td>
 
-            <td contenteditable="false">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <i class="far fa-edit"></i>
-                <i class="far fa-save d-none"></i>
+            <td class="">
+                <div class="currency">
+                    {% include 'page-elements/components/forms/currency-select.twig' with {
+                        "disabled": true,
+                        "currency": record.currency
+                    }%}
+                </div>
             </td>
+
+            {% include 'modules/common/components/table-cells/actions.html.twig' with {
+                "trash": true,
+                "edit": true,
+                "save": true
+            } %}
+
         </tr>
     {% endfor %}
 
@@ -39,10 +53,26 @@
 {% if summarries is not empty  %}
     <section class="summary-section d-flex justify-content-center">
         <div class="">
-            <h5><u>Summary</u></h5>
+            <h5><u>{{ 'other.summary' | trans }}</u></h5>
             <ul style="list-style-type:none;margin:0; padding:0;">
                 {% for summary in summarries %}
-                    <li style="margin:0; padding:0;font-size:14px;"><b>{{ summary.target }}:</b> {{ summary.amount }} </li>
+                    <li style="margin:0; padding:0;font-size:14px;"><b>{{ summary.target }}:</b>
+                        {{ summary.amount }}
+
+                        {% set is_currency_present = false %}
+
+                        {% for currency_dto in currencies_dtos %}
+                            {% if currency_dto.getName() == summary.currency %}
+                                {% set is_currency_present = true %}
+                                {{ currency_dto.getSymbol() }}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if not is_currency_present %}
+                            {{ summary.currency }}
+                        {% endif %}
+
+                    </li>
                 {% endfor %}
             </ul>
         </div>

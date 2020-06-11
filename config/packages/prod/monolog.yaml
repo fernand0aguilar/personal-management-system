@@ -10,7 +10,7 @@ monolog:
         nested:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
-            level: critical
+            level: debug
         console:
             type: console
             process_psr_3_messages: false
@@ -23,3 +23,8 @@ monolog:
             handler: deprecation
             max_level: info
             channels: ["php"]
+        security:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.security.log"
+            channels: ["security"]
+            max_level: info

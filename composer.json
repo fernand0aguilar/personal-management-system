@@ -23,6 +23,7 @@
         "beberlei/DoctrineExtensions": "^1.2",
         "friendsofsymfony/user-bundle": "dev-master",
         "google/apiclient": "^2.0",
+        "ramsey/uuid": "^3.8",
         "sensio/framework-extra-bundle": "^5.1",
         "sensiolabs/security-checker": "^6.0",
         "specshaper/encrypt-bundle": "^1.1",
@@ -32,12 +33,12 @@
         "symfony/dotenv": "^4.0",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^4.0",
-        "symfony/http-foundation": "^4.0",
+        "symfony/http-foundation": "v4.4.7",
         "symfony/lts": "^4@dev",
         "symfony/orm-pack": "^1.0",
         "symfony/routing": "^4.0",
         "symfony/serializer": "^4.0",
-        "symfony/swiftmailer-bundle": "^3.1",
+        "symfony/swiftmailer-bundle": "^3.3",
         "symfony/templating": "^4.0",
         "symfony/twig-bundle": "^4.0",
         "symfony/webpack-encore-bundle": "^1.4",
@@ -87,10 +88,12 @@
             "security-checker security:check": "script"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "clear",
+            "php -r \"include_once 'src//AutoInstaller.php'; use App\\AutoInstaller; AutoInstaller::run();\" < /dev/tty"
+
         ],
         "post-update-cmd": [
-            "@auto-scripts"
+
         ]
     },
     "conflict": {

@@ -2,7 +2,7 @@
 
 namespace App\Form\Modules\Notes;
 
-use App\Controller\Utils\Application;
+use App\Controller\Core\Application;
 use App\Entity\Modules\Notes\MyNotesCategories;
 use App\Form\Type\FontawesomepickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -18,31 +18,39 @@ class MyNotesCategoriesType extends AbstractType {
     /**
      * @var Application
      */
-    private static $app;
+    private $app;
 
     public function __construct(Application $app) {
-        static::$app = $app;
+        $this->app = $app;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
+
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'label' => $this->app->translator->translate('forms.MyNotesCategoriesType.name')
+            ])
             ->add('parent_id', EntityType::class, [
                 'class' => MyNotesCategories::class,
-                'choices' => static::$app->repositories->myNotesCategoriesRepository->findBy(['deleted' => 0]),
+                'choices' => $this->app->repositories->myNotesCategoriesRepository->findBy(['deleted' => 0]),
                 'choice_label' => function (MyNotesCategories $note_category) {
                     return $note_category->getName();
                 },
                 'required' => false,
-                'label' => 'Parent'
+                'label' => $this->app->translator->translate('forms.MyNotesCategoriesType.parentId')
             ])
-            ->add('icon', FontawesomepickerType::class, [])
+            ->add('icon', FontawesomepickerType::class, [
+                'label' => $this->app->translator->translate('forms.MyNotesCategoriesType.icon')
+            ])
             ->add('color', ColorType::class, [
                 'attr' => [
                     'style' => 'height:40px !important; width:80px !important;'
-                ]
+                ],
+                'label' => $this->app->translator->translate('forms.MyNotesCategoriesType.color')
             ])
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class, [
+                'label' => $this->app->translator->translate('forms.general.submit')
+            ]);
 
     }
 

@@ -2,9 +2,10 @@
 
 namespace App\Form\Modules\Job;
 
-use App\Controller\Utils\Application;
+use App\Controller\Core\Application;
 use App\Entity\Modules\Job\MyJobHolidays;
 use App\Entity\Modules\Job\MyJobHolidaysPool;
+use App\Services\Core\Translator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -16,18 +17,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MyJobHolidaysType extends AbstractType
 {
-
+    
     /**
      * @var Application
      */
-    private static $app;
+    private $app;
 
     public function __construct(Application $app) {
-        static::$app = $app;
+        $this->app = $app;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
+
+        $this->app->translator = new Translator();
+
         $builder
             ->add('year', ChoiceType::class, [
                 'choices'       => $options['choices'],
@@ -36,21 +39,25 @@ class MyJobHolidaysType extends AbstractType
                 },
                 'attr' => [
                     'required'      => 'required',
-                ]
+                ],
+                'label' => $this->app->translator->translate('forms.MyJobHolidaysType.labels.year'),
             ])
             ->add('daysSpent',IntegerType::class , [
                 'attr' => [
                     'min'           => 1,
-                    'placeholder'   => 'Amount of days that You want to spend'
+                    'placeholder'   => $this->app->translator->translate('forms.MyJobHolidaysType.placeholders.daysSpent')
                 ],
-                'label' => 'Days',
+                'label' => $this->app->translator->translate('forms.MyJobHolidaysType.labels.daysSpent'),
             ])
             ->add('information', TextType::class, [
                 'attr' => [
-                    'placeholder' => 'Goal/Reason of spending holidays'
+                    'placeholder' => $this->app->translator->translate('forms.MyJobHolidaysType.placeholders.information')
                 ],
+                'label' => $this->app->translator->translate('forms.MyJobHolidaysType.labels.information'),
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => $this->app->translator->translate('forms.general.submit'),
+            ])
         ;
     }
 

@@ -1,17 +1,18 @@
 {% set currUrl = path(app.request.attributes.get('_route'),
     app.request.attributes.get('_route_params')) %}
 {% set getAttrs = app.request.attributes.get('_route_params') %}
+{% set avatar_placeholder_image_pat = asset('assets/images/avatar_placeholder.jpg') %}
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-    <title>{% block title %}Personal Management System (PMS){% endblock %}</title>
+    <title>{% block title %}{{ 'page.title' | trans }}{% endblock %}</title>
     <link rel="stylesheet" href="{{ asset('assets/app.css') }}"/>
 
     {% block staticStyleSheets %}
-        <link rel="stylesheet" href="/assets_/static-libs/furcan-iconpicker/iconpicker-1.0.0.css"/>
+        <link rel="stylesheet" href="{{ asset('assets_/static-libs/furcan-iconpicker/1.5/iconpicker-1.5.0.css') }}"/>
     {% endblock %}
 
     {% block stylesheets %}
@@ -68,16 +69,15 @@
         </style>
     {% endblock %}
 
-    {% block externalCss %}
-        <link href="https://fonts.googleapis.com/css?family=Courgette&display=swap" rel="stylesheet">
-    {% endblock %}
-
     {% block headjavascript %}
+        <script defer src="{{ asset('assets_/static-libs/fontawesome/5.11.3/js/all.min.js') }}"></script>
     {% endblock %}
 
     {% block twigToJavascript %}
         <script>
-            var TWIG_GET_ATTRS = '{{ getAttrs | json_encode | raw }}'
+            var TWIG_GET_ATTRS      = '{{ getAttrs | json_encode | raw }}';
+            var TWIG_ROUTE          = '{{ app.request.attributes.get('_route') }}';
+            var TWIG_REQUEST_URI    = '{{ app.request.requestUri }}';
         </script>
     {% endblock %}
 
@@ -111,19 +111,33 @@
     <!-- #Main ============================ -->
     <div class="page-container">
 
+        {# This must be done this way for controllers/etc - for unknown reason yaml defined globals are not working when trying to call constant() with them #}
+        {% set modules_controller = 'App\\Controller\\Modules\\ModulesController::' %}
+        {% set dialogs_controller = 'App\\Action\\Core\\DialogsAction::' %}
+        {% set user_entity        = 'App\\Entity\\User::' %}
+
         <!-- ### $Topbar ### -->
         <div class="header navbar">
             <div class="header-container">
                 {% include 'page-elements/components/topbar.twig' %}
             </div>
+            <div>
+                {% if isMaintenance() %}
+                    {% include 'page-elements/components/maintenance-mode.twig' %}
+                {% endif %}
+            </div>
         </div>
+
+
+
+
         <section class="twig-body-section">
             {% block body %}{% endblock %}
         </section>
         <!-- ### $App Screen Footer ### -->
         <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
             <span>
-                Copyright © 2019 Builded by
+                {{ 'page.footerCopyright' | trans }}
                 <a href="https://github.com/Volmarg" target='_blank' title="Volmarg Reiso">Volmarg Reiso</a>.
             </span>
         </footer>
@@ -148,7 +162,7 @@
 
 {% block staticJavascriptsLibs %}
     {# Info: due to the fact that webpack initiliazies JQ($) all scripts before can't use it (pure js only) #}
-    <script src="/assets_/static-libs/furcan-iconpicker/iconpicker-1.0.0.js"></script>
+    <script src="{{ asset('assets_/static-libs/furcan-iconpicker/1.5/iconpicker-1.5.0.js') }}"></script>
     <script src="/assets_/static-libs/jscolor/jscolor.js"></script>
 {% endblock %}
 

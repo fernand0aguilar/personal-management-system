@@ -18,15 +18,25 @@
 
 @import 'app.css';
 @import 'libs/customization-for-liblaries/fontawesome';
+@import 'libs/customization-for-liblaries/popover.scss';
 
 /* My-scsses */
 
 @import 'ui/notes.scss';
+@import 'ui/my-contacts.scss';
 @import 'ui/my-travels-ideas.scss';
 @import 'ui/my-monthly-payments.scss';
+@import 'ui/my-payments-bills.scss';
 @import 'ui/achievements.scss';
 @import 'ui/goals.scss';
 @import 'ui/general.scss';
 @import 'ui/files-upload.scss';
 @import 'ui/my-images.scss';
 @import 'ui/lightgallery.scss';
+@import 'ui/top-bar-files-search.scss';
+@import 'ui/nav.scss';
+@import 'fonts.scss';
+@import 'ui/my-issues.scss';
+
+/* Node packages */
+@import '../../node_modules/flatpickr/dist/flatpickr.min.css';

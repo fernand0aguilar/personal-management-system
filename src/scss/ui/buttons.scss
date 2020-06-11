@@ -64,11 +64,41 @@ input:checked + .slider:before {
 }
 
 /* Actions on tables */
-.fa-trash, .fa-edit, .fa-save, .fa-copy, .fa-random {
+.fa-trash, .fa-edit, .fa-save, .fa-copy, .fa-random, .action-lock-record, .action-fontawesome {
   cursor: pointer;
 }
 
-/* Circle for quick access to something - like quick addnote */
+/* Widget */
+.widget {
+  opacity: 0.5;
+  height: 6em;
+  width: 6em;
+  font-size: .7em;
+  position: relative;
+  border-radius: 100%;
+  right: 30px;
+
+  &:hover {
+    opacity: 0.8 !important;
+    cursor: pointer;
+  }
+}
+
+[data-widget^="true"] {
+  z-index: 5;
+}
+
+/**
+  Widgets wrapper
+ */
+.widgets-wrapper {
+  position: fixed;
+  bottom: 40px;
+  right: 0;
+  z-index: 6;
+}
+
+/* Plus widget */
 $cirlceColor: #0062cc;
 $plusColor: white;
 .circle-plus {
@@ -76,7 +106,7 @@ $plusColor: white;
   width: 6em;
   font-size: 0.7em /*Will change icon size*/
 ;
-  position: absolute !important;
+  position: relative;
   right: 30px;
 }
 
@@ -117,4 +147,33 @@ $plusColor: white;
 .color-legend-button {
   color: white;
   font-size: 13px !important;
+}
+
+/* Centered fontawesome element */
+.fontawesome-centered{
+  width: inherit;
+  height: inherit;
+  border-radius: 100%;
+  line-height: 58px;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+  margin-top:5px;
+  margin-left:1px;
+}
+
+.fontawesome-centered i {
+  line-height: inherit;
+}
+
+/* Button based on favicon */
+.button-icon {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  display: inline;
 }

@@ -4,6 +4,11 @@ import 'tinymce/plugins/lists';
 import 'tinymce/plugins/table';
 import 'tinymce/plugins/image';
 import 'tinymce/plugins/preview';
+import 'tinymce/plugins/paste';
+import 'tinymce/plugins/codesample';
+
+import utils_custom from "../utils/utils_custom";
+import Prism from 'prismjs';
 
 var IconPicker = require('@furcan/iconpicker');
 
@@ -29,6 +34,7 @@ export default (function () {
             'note-wrapper': '.single-note-details',
             'modal-shadow': '.modal-backdrop',
             'note-button': '.note-button',
+            'note-modal-close-button': 'button.close',
             prefixless: {
                 'hidden': 'd-none'
             }
@@ -42,6 +48,7 @@ export default (function () {
         },
         init: function () {
             let config = this.config;
+            tinymce.remove(tinymce.custom.classes["tiny-mce-selector"]);
             config.selector = tinymce.custom.classes["tiny-mce-selector"];
             tinymce.init(config);
 
@@ -51,7 +58,12 @@ export default (function () {
             this.MyNotes.attachEditEvent();
             this.MyNotes.attachSaveEvent();
             this.MyNotes.attachDeleteNoteEvent();
+
+            this.preventFocusHijack();
         },
+        /**
+         * Fix Problem with misbehaving text-alignment
+         */
         setDefaultTextAlignment: function () {
             $(document).ready(() => {
                 let iframe_body = $('iframe').contents().find("body");
@@ -64,16 +76,45 @@ export default (function () {
                 });
             });
         },
+        /**
+         * Gets content of the tinymce editor body (html)
+         * @param tinyMceInstanceSelector {string}
+         * @returns {string}
+         */
+        getTextContentForTinymceIdSelector: function(tinyMceInstanceSelector){
+            let tinymceInstance = tinymce.get(tinyMceInstanceSelector);
+
+            if( tinymceInstance === null ){
+                throw{
+                    "message"  : "This is not a tinymce instance",
+                    "selector" : tinyMceInstanceSelector
+                }
+            }
+
+            let tinymceContent  = tinymceInstance.getContent();
+            return tinymceContent;
+        },
         changeClearFormattingButtonLogic: function () {
 
         },
         config: {
             menubar: false,
             mode: "specific_textareas",
-            plugins: ['lists', 'table', 'image', 'preview'],
-            toolbar: 'bold italic | formatselect fontselect | forecolor colorpicker | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | image | preview',
+            plugins: ['lists', 'table', 'image', 'preview', 'paste', 'codesample'],
+            toolbar: 'bold italic | formatselect fontselect | forecolor colorpicker | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat | image | codesample | preview',
             height: 400,
             forced_root_block: '',
+            paste_data_images: true,
+            image_uploadtab: true,
+            codesample_global_prismjs: true,
+            // codesample_languages - whenver You add anything in here, add also import for given language in `src/assets/scripts/prism/index.js:2`
+            codesample_languages: [
+                { text: 'HTML/XML', value: 'markup' },
+                { text: 'JavaScript', value: 'javascript' },
+                { text: 'CSS', value: 'css' },
+                { text: 'PHP', value: 'php' },
+                { text: 'BASH', value: 'bash' },
+            ],
             images_dataimg_filter: function(img) {
                 return img.hasAttribute('internal-blob');
             },
@@ -87,13 +128,29 @@ export default (function () {
                 });
             },
         },
+        /**
+         * This fixes the problem where jquery/Bootstrap is stealing focus from TinyMCE textarea
+         * In this case for plugin:
+         * - codesample
+         */
+        preventFocusHijack: function(){
+            $(document).on('focusin', function(event) {
+
+                // this is handled for codesample plugin - without it textarea is unclickable
+                let $toxTextArea = $(event.target).closest(".tox-textarea");
+
+                if ( $toxTextArea.length ) {
+                    event.stopImmediatePropagation();
+                }
+            });
+        },
         "MyNotes": {
             init: function (editButton) {
-                let modalContent = $(editButton).closest(tinymce.custom.classes["note-modal-content"]);
-                let id = $(modalContent).closest(tinymce.custom.classes.modal).attr('data-id');
+                let id      = $(editButton).attr('data-id');
+                let config  = tinymce.custom.config;
 
-                let config = tinymce.custom.config;
                 config.selector = tinymce.custom.classes["note-modal-tinymce-content"] + id;
+
                 tinymce.init(config);
             },
             attachEditEvent: function () {
@@ -104,7 +161,7 @@ export default (function () {
                     $(button).click((event) => {
 
                         let clickedButton = event.target;
-                        let modal = $(clickedButton).closest(tinymce.custom.classes.modal);
+                        let modal = $(clickedButton).closest(tinymce.custom.classes['note-modal-content']);
                         let noteTitle = $(modal).find(tinymce.custom.classes["note-modal-title"]);
                         let categoriesList = $(modal).find(tinymce.custom.classes["note-modal-categories-list"]);
 
@@ -126,9 +183,10 @@ export default (function () {
                 $(saveButtons).each((index, button) => {
 
                     $(button).click((event) => {
-                        let clickedButton = event.target;
-                        let modal = $(clickedButton).closest(tinymce.custom.classes.modal);
-                        let tinymceModal = $(modal).find('iframe');
+                        let clickedButton       = event.target;
+                        let modal               = $(clickedButton).closest(tinymce.custom.classes.modal);
+                        let tinymceModal        = $(modal).find('iframe');
+                        let modalCloseButton    = $(modal).find(tinymce.custom.classes["note-modal-close-button"]);
 
                         if (tinymceModal.length !== 0) {
                             let noteId = $(clickedButton).attr('data-id');
@@ -153,6 +211,9 @@ export default (function () {
                                 data: data,
                             }).done(() => {
                                 bootstrap_notifications.notify(tinymce.custom.messages["note-update-success"], 'success');
+                                ui.ajax.loadModuleContentByUrl(location.pathname);
+                                $(modalCloseButton).click();
+                                $('.modal-backdrop').remove();
                             }).fail(() => {
                                 bootstrap_notifications.notify(tinymce.custom.messages["note-update-fail"], 'danger');
                             });
@@ -175,6 +236,8 @@ export default (function () {
                             'id': noteId,
                         };
 
+                        ui.widgets.loader.showLoader();
+
                         $.ajax({
                             method: 'POST',
                             url: '/my-notes/delete-note/',
@@ -192,6 +255,8 @@ export default (function () {
 
                         }).fail(() => {
                             bootstrap_notifications.notify(tinymce.custom.messages["note-delete-fail"], 'danger');
+                        }).always( () => {
+                            ui.widgets.loader.hideLoader();
                         });
 
                     })

@@ -2,12 +2,12 @@
 
     <a class="sidebar-link" href="javascript:void(0);">
         <span class="icon-holder" style="color:orange;">
-            <i class="fas fa-upload"></i>
+            <i class="fas fa-upload fa-sm"></i>
         </span>
 
-        <span class="title">Upload</span>
+        <span class="title">{{ 'sidebar.menu.upload.label' | trans }}</span>
         <span class="arrow">
-              <i class="ti-angle-right"></i>
+              <i class="ti-angle-right fa-sm"></i>
         </span>
     </a>
 
@@ -15,12 +15,12 @@
 
         <li>
             <a class="sidebar-link" href="{{ path('upload') }}">
-                Add
+                {{ 'sidebar.menu.upload.add' | trans }}
             </a>
         </li>
         <li>
             <a class="sidebar-link" href="{{ path('upload_settings') }}">
-                Manage
+                {{ 'sidebar.menu.upload.manage' | trans }}
             </a>
         </li>
 

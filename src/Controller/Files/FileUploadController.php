@@ -5,25 +5,16 @@ namespace App\Controller\Files;
 
 use App\Controller\Modules\Files\MyFilesController;
 use App\Controller\Modules\Images\MyImagesController;
-use App\Controller\Utils\Application;
-use App\Controller\Utils\Env;
-use App\Controller\Utils\Utils;
-use App\Form\UploadFormType;
-use App\Services\DirectoriesHandler;
-use App\Services\FilesHandler;
-use App\Services\FileUploader;
+use App\Controller\Core\Application;
+use App\Controller\Core\Env;
+use App\Services\Files\DirectoriesHandler;
+use App\Services\Files\FilesHandler;
+use App\Services\Core\Translator;
 use DirectoryIterator;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-
 class FileUploadController extends AbstractController {
-
-    const UPLOAD_PAGE_TWIG_TEMPLATE     = 'core/upload/upload-page.html.twig';
 
     const MODULE_UPLOAD_DIR_FOR_IMAGES  = 'images';
     const MODULE_UPLOAD_DIR_FOR_FILES   = 'files';
@@ -38,9 +29,12 @@ class FileUploadController extends AbstractController {
 
     const KEY_UPLOAD_MODULE_DIR         = 'upload_module_dir';
 
-    const DEFAULT_KEY_IS_MISSING        = 'Required key is missing in request';
-
     const KEY_MAIN_FOLDER               = 'Main folder';
+
+    const KEY_TAG           = 'tag';
+    const KEY_FILENAME      = 'fileName';
+    const KEY_EXTENSION     = 'fileExtension';
+    const KEY_UPLOAD_TABLE  = 'upload_table';
 
     const MODULES_UPLOAD_DIRS = [
         self::MODULE_UPLOAD_DIR_FOR_IMAGES => self::MODULE_UPLOAD_DIR_FOR_IMAGES,
@@ -52,15 +46,15 @@ class FileUploadController extends AbstractController {
         MyFilesController::MODULE_NAME  => self::MODULE_UPLOAD_DIR_FOR_FILES
     ];
 
-    /**
-     * @var FileUploader $fileUploader
-     */
-    private $fileUploader;
+    const MODULE_UPLOAD_DIR_TO_MODULE_NAME = [
+       self::MODULE_UPLOAD_DIR_FOR_IMAGES => MyImagesController::MODULE_NAME,
+       self::MODULE_UPLOAD_DIR_FOR_FILES  => MyFilesController::MODULE_NAME,
+    ];
 
     /**
-     * @var FilesHandler $filesHandler
+     * @var FilesHandler $files_handler
      */
-    private $filesHandler;
+    private $files_handler;
 
     /**
      * @var Application $app
@@ -68,74 +62,23 @@ class FileUploadController extends AbstractController {
     private $app;
 
     /**
-     * @var DirectoriesHandler $directoriesHandler
+     * @var DirectoriesHandler $directories_handler
      */
-    private $directoriesHandler;
+    private $directories_handler;
 
-    public function __construct(FileUploader $fileUploader, FilesHandler $filesHandler, DirectoriesHandler $directoriesHandler, Application $app) {
-        $this->fileUploader         = $fileUploader;
-        $this->app                  = $app;
-        $this->filesHandler         = $filesHandler;
-        $this->directoriesHandler   = $directoriesHandler;
-    }
-
-    /**
-     * @Route("/upload/", name="upload")
-     * @param Request $request
-     * @return Response
-     * @throws \Exception
-     */
-    public function displayUploadPage(Request $request) {
-        $this->sendData($request);
-        return $this->renderTemplate(false);
-    }
-
-    /**
-     * @Route("/upload/send", name="upload_send")
-     * @param Request $request
-     * @return JsonResponse
-     * @throws \Exception
-     */
-    public function sendData(Request $request){
-        $this->handleFileUpload($request);
-
-        $data = [
-            'template' => $this->renderTemplate(true)->getContent()
-        ];
-
-        return new JsonResponse($data);
-    }
-
-    /**
-     * @param $ajax_render
-     * @return Response
-     * @throws \Exception
-     */
-    private function renderTemplate($ajax_render)
-    {
-        $upload_max_filesize = preg_replace("/[^0-9]/","",ini_get('upload_max_filesize'));
-        $post_max_size       = preg_replace("/[^0-9]/","",ini_get('post_max_size'));
-
-        $max_upload_size_mb  = ( $post_max_size < $upload_max_filesize ? $post_max_size : $upload_max_filesize);
-
-        $form = $this->getUploadForm();
-
-        $data = [
-            'ajax_render'           => $ajax_render,
-            'form'                  => $form->createView(),
-            'max_upload_size_mb'    => $max_upload_size_mb
-        ];
-
-        return $this->render(static::UPLOAD_PAGE_TWIG_TEMPLATE, $data);
-
+    public function __construct(FilesHandler $filesHandler, DirectoriesHandler $directoriesHandler, Application $app) {
+        $this->app                 = $app;
+        $this->files_handler       = $filesHandler;
+        $this->directories_handler = $directoriesHandler;
     }
 
     /**
      * @param string $upload_module_dir
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getTargetDirectoryForUploadModuleDir(string $upload_module_dir){
+        $translator = new Translator();
 
         switch ($upload_module_dir) {
             case FileUploadController::MODULE_UPLOAD_DIR_FOR_FILES:
@@ -145,26 +88,11 @@ class FileUploadController extends AbstractController {
                 $targetDirectory = Env::getImagesUploadDir();
                 break;
             default:
-                throw new \Exception('This type is not allowed');
+                $message  = $translator->translate('responses.upload.uploadDirNotSupported');
+                throw new Exception($message);
         }
 
         return $targetDirectory;
-    }
-
-    public static function getUploadModuleDirForTargetDirectory(string $target_directory) {
-
-        switch ($target_directory) {
-            case Env::getImagesUploadDir():
-                $target_module_upload_dir = MyImagesController::TARGET_UPLOAD_DIR;
-                break;
-            case Env::getFilesUploadDir():
-                $target_module_upload_dir = MyFilesController::TARGET_UPLOAD_DIR;
-                break;
-            default:
-                throw new \Exception('This target_directory is not allowed');
-        }
-
-        return $target_module_upload_dir;
     }
 
     /**
@@ -187,48 +115,10 @@ class FileUploadController extends AbstractController {
     }
 
     /**
-     * @return \Symfony\Component\Form\FormInterface
-     * @throws \Exception
-     */
-    private function getUploadForm(){
-        return $this->createForm(UploadFormType::class, null, []);
-    }
-
-    /**
-     * @param Request $request
-     * @throws \Exception
-     */
-    private function handleFileUpload(Request $request) {
-        $form = $this->getUploadForm();
-        $form->handleRequest($request);
-
-        $response = new Response('No files were uploaded');
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $form_data = $form->getData();
-
-            $subdirectory       = $form_data[DirectoriesHandler::SUBDIRECTORY_KEY];
-            $upload_module_dir  = $form_data[static::KEY_UPLOAD_MODULE_DIR];
-            $uploaded_files     = $form_data[FilesHandler::FILE_KEY];
-
-            foreach ($uploaded_files as $uploadedFile) {
-                $response = $this->fileUploader->upload($uploadedFile, $request, $upload_module_dir, $subdirectory);
-            }
-
-            $flash_type  = Utils::getFlashTypeForRequest($response);
-            $message    = $response->getContent();
-
-            $this->addFlash($flash_type, $message);
-        }
-
-    }
-
-    /**
      * @param bool $grouped_by_module_upload_dirs
      * @param bool $include_main_folder
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getFoldersTreesForAllUploadModulesDirs($grouped_by_module_upload_dirs = false, $include_main_folder = false){
 
@@ -251,7 +141,7 @@ class FileUploadController extends AbstractController {
      * @param string $upload_module_dir
      * @param bool $include_main_folder
      * @return array|false
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getFoldersTreesForUploadModuleDir(string $upload_module_dir, $include_main_folder = false)
     {

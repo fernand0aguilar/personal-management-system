@@ -3,8 +3,9 @@
 namespace App\Form;
 
 use App\Controller\Files\FileUploadController;
-use App\Controller\Utils\Application;
+use App\Controller\Core\Application;
 use App\Form\Type\UploadrecursiveoptionsType;
+use App\Services\Core\Translator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,10 +19,10 @@ class UploadFormType extends AbstractType {
     /**
      * @var Application
      */
-    private static $app;
+    private $app;
 
     public function __construct(Application $app) {
-        static::$app = $app;
+        $this->app = $app;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -32,9 +33,11 @@ class UploadFormType extends AbstractType {
                 'attr'          => [
                     'data-dependent-list-selector' => '#upload_form_subdirectory'
                 ],
+                'label' => $this->app->translator->translate('forms.UploadFormType.labels.uploadModuleDir')
             ])
             ->add('file', FileType::class, [
-                'multiple' => true
+                'multiple' => true,
+                'label' => $this->app->translator->translate('forms.UploadFormType.labels.file')
             ]);
 
         $builder
@@ -44,7 +47,8 @@ class UploadFormType extends AbstractType {
                 'attr' => [
                     'class' => 'form-control align-self-center',
                     'style' => 'height:50px;',
-                ]
+                ],
+                'label' => $this->app->translator->translate('forms.UploadFormType.labels.subdirectory')
             ]);
 
         $builder
@@ -52,7 +56,8 @@ class UploadFormType extends AbstractType {
                 'attr' => [
                     'class' => 'upload-submit btn btn-sm btn-primary',
                     'style' => 'width:100%;'
-                ]
+                ],
+                'label' => $this->app->translator->translate('forms.general.submit')
             ]);
 
         $builder

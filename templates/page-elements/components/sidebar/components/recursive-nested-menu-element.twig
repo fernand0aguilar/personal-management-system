@@ -13,7 +13,7 @@
         {% set href = '#' %}
     {% endif %}
 
-    {% if isCategoryActive(elements[child_id].category_id, type) == false %}
+    {% if isNotesCategoryActive(elements[child_id].category_id, type) == false %}
         {% set disabled = ' disabled' %}
     {% else %}
         {% set disabled = '' %}
@@ -33,7 +33,7 @@
 
         {# Subcategory #}
         {% if elements[child_id].childrens_id is not null %}
-            <a class="sidebar-link d-inline {{ disabled }}" href="javascript:void(0);">
+            <a class="sidebar-link d-inline" href="javascript:void(0);">
                 <span class="arrow"><i class="ti-angle-right"></i></span>
             </a>
 

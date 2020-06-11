@@ -3,19 +3,23 @@
     <table id="MyGoalsPayments" class="table table-hover" cellspacing="0" width="100%" data-table="true">
         <thead>
         <tr>
-            <td class="id d-none"> #</td>
-            <td class="name"> Name</td>
-            <td class="collectionStartDate"> Collection start date</td>
-            <td class="deadline"> Deadline</td>
-            <td class="moneyGoal"> Money goal</td>
-            <td class="moneyCollected"> Money collected</td>
-            <td class="displayOnDashboard"> Display on dashboard</td>
-            <td>Actions</td>
+            <td class="id d-none">{{ 'datatables.table.idHash' | trans }}</td>
+            <td class="name">{{ 'goals.settings.goalsPaymentsSection.table.name' | trans }}</td>
+            <td class="collectionStartDate">{{ 'goals.settings.goalsPaymentsSection.table.collectionStartDate' | trans }}</td>
+            <td class="deadline">{{ 'goals.settings.goalsPaymentsSection.table.deadline' | trans }}</td>
+            <td class="moneyGoal">{{ 'goals.settings.goalsPaymentsSection.table.moneyGoal' | trans }}</td>
+            <td class="moneyCollected">{{ 'goals.settings.goalsPaymentsSection.table.moneyCollected' | trans }}</td>
+            <td class="displayOnDashboard">{{ 'goals.settings.goalsPaymentsSection.table.displayOnDashboard' | trans }}</td>
+            <td>{{ 'datatables.table.actions' | trans }}</td>
         </tr>
         </thead>
         <tbody>
 
         {% for payment in all_goals_payments %}
+
+            {% set collectionStartTimestamp = date( payment.collectionStartDate | date('m/d/yyyy') ).timestamp %}
+            {% set deadlineTimestamp        = date( payment.deadline            | date('m/d/yyyy') ).timestamp %}
+
             {% if payment.displayOnDashboard %}
                 {% set checked = 'checked' %}
             {% else %}
@@ -32,12 +36,28 @@
                     {{ payment.name }}
                 </td>
 
-                <td class="collectionStartDate">
-                    {{ payment.collectionStartDate|date('Y-m-d') }}
+                <td
+                        class="collectionStartDate"
+                        data-order="{{ collectionStartTimestamp }}"
+                >
+                    <span class="collectionStartDate">
+                        {% include 'page-elements/components/forms/input-datepicker.twig' with {
+                            "value"     : payment.collectionStartDate|date('Y-m-d'),
+                            "disabled"  : true
+                        } %}
+                    </span>
                 </td>
 
-                <td class="deadline">
-                    {{ payment.deadline|date('Y-m-d') }}
+                <td
+                    class=""
+                    data-order="{{ deadlineTimestamp }}"
+                >
+                    <span class="deadline">
+                        {% include 'page-elements/components/forms/input-datepicker.twig' with {
+                            "value"     : payment.deadline|date('Y-m-d'),
+                            "disabled"  : true
+                        } %}
+                    </span>
                 </td>
 
                 <td class="moneyGoal">
@@ -49,14 +69,19 @@
                 </td>
 
                 <td class="">
-                    <input type="checkbox" class="disabled displayOnDashboard checkbox-disabled" {{ checked }}/>
+                    {% include 'page-elements/components/forms/input-rounded-checkbox.twig' with {
+                        "checked": checked,
+                        "label"  : "",
+                        "classes": "disabled checkbox-disabled"
+                    } %}
                 </td>
 
-                <td contenteditable="false">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                    <i class="far fa-edit"></i>
-                    <i class="far fa-save d-none"></i>
-                </td>
+                {% include 'modules/common/components/table-cells/actions.html.twig' with {
+                    "trash": true,
+                    "edit": true,
+                    "save": true
+                } %}
+
             </tr>
 
         {% endfor %}

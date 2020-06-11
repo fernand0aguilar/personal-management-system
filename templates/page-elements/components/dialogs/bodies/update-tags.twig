@@ -1,0 +1,27 @@
+{% set files_handler_service    = 'App\\Services\\Files\\FileTagger' %}
+{% set KEY_TAGS                 = constant(files_handler_service~"::KEY_TAGS") %}
+
+<div>
+    {{ form_start(form) }}
+
+
+    <div class="row">
+        <div class="col-sm-4">
+            {{ form_label(form[KEY_TAGS], null, { 'label_attr': {'class': 'col-form-label col-sm-12 required'}} ) }}
+        </div>
+        <div class="col-sm-6">
+            {{ form_widget(form[KEY_TAGS],  {'attr': {"class": 'tags form-control'}}) }}
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_widget(form['submit'], {'attr': {'class': 'btn-primary btn float-right' }} ) }}
+        </div>
+    </div>
+
+
+    {{ form_end(form) }}
+</div>

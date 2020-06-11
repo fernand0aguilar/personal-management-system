@@ -29,16 +29,17 @@ class MyPasswordsRepository extends ServiceEntityRepository {
 
         $sql = "
             SELECT password
-            FROM my_passwords
+            FROM my_password
             WHERE id = :id
             AND deleted = 0
         ";
 
         $binded_params = ['id' => $id];
-        $statement = $connection->prepare($sql);
+        $statement     = $connection->prepare($sql);
         $statement->execute($binded_params);
-        $result = $statement->fetchAll();
-        $returned = (!empty($result) ? $result[0]->password : '');
+
+        $result     = $statement->fetchAll();
+        $returned   = (!empty($result) ? $result[0]->password : '');
 
         return $returned;
     }

@@ -8,8 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Modules\Notes\MyNotesCategoriesRepository")
+ * @ORM\Table(name="my_note_category")
  */
 class MyNotesCategories {
+
+    const KEY_DELETED = "deleted";
+    const KEY_NAME    = "name";
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -23,7 +28,7 @@ class MyNotesCategories {
     private $icon;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Modules\Notes\MyNotes", mappedBy="setting")
+     * @ORM\OneToMany(targetEntity="App\Entity\Modules\Notes\MyNotes", mappedBy="category")
      */
     private $note;
 
@@ -109,7 +114,7 @@ class MyNotesCategories {
     public function addNote(MyNotes $note): self {
         if (!$this->note->contains($note)) {
             $this->note[] = $note;
-            $note->setSetting($this);
+            $note->setCategory($this);
         }
 
         return $this;
@@ -119,8 +124,8 @@ class MyNotesCategories {
         if ($this->note->contains($note)) {
             $this->note->removeElement($note);
             // set the owning side to null (unless already changed)
-            if ($note->getSetting() === $this) {
-                $note->setSetting(null);
+            if ($note->getCategory() === $this) {
+                $note->setCategory(null);
             }
         }
 

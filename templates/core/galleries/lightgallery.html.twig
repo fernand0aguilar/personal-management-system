@@ -1,7 +1,11 @@
 {% set my_files_controller = 'App\\Controller\\Modules\\Images\\MyImagesController' %}
-{% set KEY_FILE_NAME        = constant(my_files_controller~"::KEY_FILE_NAME") %}
+{% set FileTagger          = 'App\\Services\\Files\\FileTagger' %}
+
 {% set KEY_FILE_FULL_PATH   = constant(my_files_controller~"::KEY_FILE_FULL_PATH") %}
+{% set KEY_FILE_NAME        = constant(my_files_controller~"::KEY_FILE_NAME") %}
+{% set KEY_TAGS             = constant(FileTagger~"::KEY_TAGS") %}
 {% set bytes_in_mb          = 1048576 %}
+{% set max_filename_len     = 75 %}
 
 
 <div class="container-fluid">
@@ -9,20 +13,102 @@
     <div class="row">
         <div class="col-md-12">
             <div class="bgc-white bd bdrs-3 p-20 mB-20 d-flex flex-column">
-                <h4 class="c-grey-900 mB-20 align-self-center">Images</h4>
-                <div class="my-images-all-images lightgallery">
-                    <div class="my-gallery grid" data-masonry='{
-                        "itemSelector": ".grid-item",
-                        "columnWidth": 30
-                    }'
-                    >
-                        <div id="aniimated-thumbnials" class="grid-item">
-                            {% for image in images %}
-                                <a href="/{{ image[KEY_FILE_FULL_PATH] }}">
-                                    <img src="/{{ image[KEY_FILE_FULL_PATH] }}" alt="{{ image[KEY_FILE_NAME] }}" style="height:200px;"/>
-                                </a>
-                            {% endfor %}
+                <h4 class="c-grey-900 mB-20 align-self-center">{{ 'lightgallery.headers.images' | trans }}</h4>
+                <div class="my-images-all-images lightgallery" style="margin-left: 20px;">
+
+                                                    {# Topbar #}
+                    <div class="row">
+                                                    {# Tags #}
+                        <div class="row col-8">
+                            <div class="col-12@sm tags-group-wrap">
+                                <div class="tags-group">
+                                    <p class="tags-label">{{ 'lightgallery.labels.tags' | trans }}</p>
+                                    <div class="btn-group shuffler-tags-options d-flex flex-wrap">
+                                        {# Buttons here will be generated via JS #}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        {# Search #}
+                        <div class="row col-4 flex-row-reverse">
+                            <div class="row flex-row-reverse">
+                                <div class="">
+                                    <div class="form-group">
+                                        <label for="filters-search-input" class="filter-label">{{ 'lightgallery.labels.search' | trans }}</label>
+                                        <input
+                                                class="textfield filter__search js-shuffle-search form-control"
+                                                type="search"
+                                                id="filters-search-input"
+                                                placeholder="Search by title" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                                                        {# Gallery #}
+                   {#
+                        this is the only case when the leading "/" in twig tpl must be added
+                        because to display images from upload dir it needs to have "/"
+                    #}
+                    <div class="row my-shuffle-container" id="aniimated-thumbnials"> {# This is a mix of shuffleJS and lightgallery #}
+                        {% for image in images %}
+
+                            {% set tags = ( "" == image[KEY_TAGS] ? "[]" : image[KEY_TAGS] ) %}
+                            {% set tags_list = jsonDecode(tags) | join(', ') %}
+
+                            <div class="col-4@sm grid-item"                     {# shuffle + lightgallery classes #}
+                                 data-groups="{{ tags }}"                       {# shuffle attr #}
+                                 data-date-created="2016-08-12"                 {# shuffle attr #}
+                                 data-title="{{ image[KEY_FILE_NAME] }}"        {# shuffle attr #}
+                                 data-src="/{{ image[KEY_FILE_FULL_PATH] }}"    {# lightgallery attr #}
+                                 data-unique-id="{{ loop.index0 }}"
+                                 data-toggle-popover="true"                     {# popover attr #}
+                                 data-html="true"                               {# popover attr #}
+                                 data-trigger="hover"                           {# popover attr #}
+                                 data-content="                                 {# popover attr #}
+                                     <p style='display: flex;'>
+                                        <span style='font-weight: bold; '>
+                                            Tags:&nbsp;
+                                        </span>
+                                            <span style='word-break: break-all;'>{{ tags_list }}</span>
+                                    </p>
+                                 "
+                                 style="                                        {# shuffle styles #}
+                                         position:relative;
+                                         margin: 5px;
+                                         "
+                            >
+                                <div class="aspect aspect--16x9">
+                                    <div class="aspect__inner">
+
+                                        <section class="image-checkbox" style="
+                                            position: absolute;
+                                            top: 10px;
+                                            left: 10px;
+                                            z-index: 999999999;
+                                        ">
+                                            {% include 'page-elements/components/forms/input-rounded-checkbox.twig' with {
+                                                "wrapperStyles": "padding: 10px;"
+                                            }%}
+                                        </section>
+
+                                        <img src="/{{ image[KEY_FILE_FULL_PATH] }}" alt="{{ image[KEY_FILE_NAME] }}" style="height:200px; "/>
+
+                                        <div class="caption-wrapper"></div>
+                                        <span class="caption-text-holder image_{{ loop.index0 }}" data-filename="{{ image[KEY_FILE_NAME] }}">
+                                            {% if  image[KEY_FILE_NAME] | length > max_filename_len %}
+                                                {{ image[KEY_FILE_NAME] | slice(0, max_filename_len) }}...
+                                            {% else %}
+                                                {{ image[KEY_FILE_NAME] }}
+                                            {% endif %}
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
 
                 </div>

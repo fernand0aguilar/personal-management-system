@@ -1,0 +1,40 @@
+<div class="masonry-item col-md-6">
+    <div class="bd bgc-white p-20">
+        <div class="layers">
+            <div class="layer w-100 mB-10">
+                <h6 class="lh-1">{{  ('dashboard.widgets.' ~ widget_name ~ '.label')  | trans }}</h6>
+            </div>
+            <div class="layer w-100">
+
+                <ul class="list-task list-group" data-role="tasklist">
+
+                    {% for schedule in schedules %}
+                        {% set icon_classes  = getClassesForSchedulesNotifications(schedule.daysDiff) %}
+                        {% set badge_classes = getClassesForSchedulesWidget(schedule.daysDiff) %}
+
+                        <li class="list-group-item bdw-0" data-role="task">
+                            <div class="peers ai-c">
+                                <label for="inputCall1" class=" peers peer-greed js-sb ai-c">
+                                        <span class="peer peer-greed">
+                                            <i class="{{ schedule.icon }} {{ icon_classes }}"></i>
+                                            <span class="{{ schedule.daysDiff < 0 ? 'text-danger' : ''}}">
+                                                {{ schedule.name }}
+                                                ({{ schedule.date }})
+                                            </span>
+                                        </span>
+                                        <span class="peer">
+                                            <span class="badge badge-pill fl-r {{ badge_classes }} lh-0 p-10">
+                                                {{ schedule.daysDiff }} days
+                                            </span>
+                                        </span>
+                                </label>
+                            </div>
+                        </li>
+
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

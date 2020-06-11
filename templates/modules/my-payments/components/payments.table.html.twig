@@ -13,8 +13,8 @@
                     {{ column|capitalize }}
                 </td>
             {% endfor %}
-            <td>Type</td>
-            <td>Actions</td>
+            <td>{{ 'payments.monthlyPayments.table.type' | trans }}</td>
+            <td>{{ 'datatables.table.actions' | trans }}</td>
         </tr>
         </thead>
         <tbody>
@@ -22,10 +22,21 @@
             {% if date_group.date|date("Y-m") in payment.date|date("Y-m-d")%}
                 <tr class="trash-parent monthly-single-data editable-parent save-parent" data-type="MyPaymentsMonthly">
                     {% for column in columns_names %}
-                        <td class="{{ column }} {% if column=='money' %}text-success{% endif %} {{ hideIdColumn(column) }}">
+
+                        {% set timestamp = date( payment.date | date('m/d/yyyy') ).timestamp %}
+
+                        <td
+                                class="{{ column }} {% if column=='money' %}text-success{% endif %} {{ hideIdColumn(column) }}"
+                                {{ ( column == "date" ? "data-order="~timestamp : '' ) }}
+                        >
 
                             {% if column == 'date' %}
-                                {{ payment.date | date('Y-m-d') }}
+                                <span class="{{ column }} ">
+                                    {% include 'page-elements/components/forms/input-datepicker.twig' with {
+                                        "value"     : payment.date | date('Y-m-d'),
+                                        "disabled"  : true
+                                    } %}
+                                </span>
                             {% else %}
                                 {{ attribute(payment,column) }}
                             {% endif %}
@@ -44,11 +55,12 @@
                         </select>
                     </td>
 
-                    <td contenteditable="false">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                        <i class="far fa-edit"></i>
-                        <i class="far fa-save d-none"></i>
-                    </td>
+                    {% include 'modules/common/components/table-cells/actions.html.twig' with {
+                        "trash": true,
+                        "edit": true,
+                        "save": true
+                    } %}
+
                 </tr>
                 {% set summary_payment=summary_payment+attribute(payment,'money') %}
             {% endif %}
@@ -80,7 +92,7 @@
             </ul>
             <hr style="border-color: lightgray;"/>
             <b>
-                <span>Monthly payments summary: </span>
+                <span>{{ 'payments.monthlyPayments.summary' | trans }}</span>
             </b>
             <span class="text-primary amount">{{ summary_payment }}</span>
         </div>

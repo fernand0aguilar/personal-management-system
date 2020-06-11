@@ -1,0 +1,73 @@
+login:
+  header:
+    pageName: Personal Management System
+    login: Login
+  labels:
+    username: 'Username:'
+    password: 'Password:'
+    remember: 'Remember Me'
+  placeholders:
+    username: 'Username'
+    password: 'Password'
+  submit: "Login"
+  pageTitle: Sign In
+
+codePages:
+  error:
+    h1: Oops
+    h3: Page Error
+    text: We track these errors automatically, but if the problem persists feel free to contact us.
+    button: Go back
+  error403:
+    h1: 403
+    h3: Access Denied
+    text: Full authentication is required to access this resource.
+    button: Go back
+    title: Access Denied
+  error404:
+    h1: 404
+    h3: Oops Page Not Found
+    text: The page you are looking for does not exist or has been moved.
+    button: Go back
+    title: 404 - page not found
+  error500:
+    h1: 500
+    h3: Internal server error
+    text: Something goes wrong with our servers, please try again later.
+    button: Go back
+    title: 500 - internal server error
+
+settings:
+  label: Settings
+  dashboard:
+    label: Dashboard
+    widgets:
+      visibility:
+        label: Widgets visibility
+        table:
+          labels:
+            name: Name
+            displayWidget: Display widget
+  finances:
+    label: Finances
+    type:
+      currencies:
+        label: Currencies
+        table:
+          name: Name
+          symbol: Symbol
+          multiplier: Multiplier
+          isDefault: Is default
+        addCurrency: Add currency
+      messages:
+        couldNotFindCurrencyForGivenName: "Could not find currency for given name"
+        defaultCurrencyCanNotBeRemove: "Default currency cannot be removed"
+        couldNotFindSettingWithThisName: "Could not find setting with this name"
+        canNotUnsetTheTheDefaultPropertyForDefaultCurrency: "Can not unset the default property for default currency"
+        couldNotHandleAddingNewCurrencyBeingDefaultValue: "Could not handle adding new currency being default value"
+        currencyWithThisNameAlreadyExist: "Currency with this name already exist"
+        success: "Currency record has been successfully updated"
+
+db:
+  foreignKeyViolation: This record cannot be removed - it's connected with existing records.
+  recordWithThisNameExist: Record with this name already exists!

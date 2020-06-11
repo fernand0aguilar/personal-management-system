@@ -2,7 +2,7 @@
 <img src="https://github.com/Volmarg/personal-management-system/blob/beta1.0/public/assets/images/logo/smaller.png?raw=true" width="150px;" />
 </p>
 <p align="center">
-<img src="https://github.com/Volmarg/personal-management-system/blob/beta1.0/github/bar.jpg?raw=true" />
+<img src="https://github.com/Volmarg/personal-management-system/blob/main/github/bar.jpg?raw=true" />
 </p>
 
 <h1 align="center"> Personal Management System</h1>
@@ -37,75 +37,59 @@
         <li><b>🔑 Passwords</b> - <span align="justify"> <i>We all get to certain point when there are just way too many passwords to handle all around. Yeah we can keep them on email, pendrive, have special patterns in our heads, but lets face it sometimes it's just too many. With the Passwords module You can keep Your passwords encrypted in Your database, while on the frontend there is a copy button that will fetch You back the original password.
         </i></span></li><br/>
         <li><b>🏆 Achievements</b> - <span><i>Want to keep a track on anything cool you did - put in this module!</i></span></li><br/>
-        <li><b>🚙 Car</b> - <span align="justify"><i>This module purpose is to keep track of any recurring things you got to do with your car like  for example oil changes, payments etc. While recurring type is just for information, date type is additionally colored and used on dashboard as reminder.</i></span></li><br/>
+        <li><b>📅 Schedules</b> - <span align="justify"><i>This module purpose is to keep track of any recurring things you got to do like for example car oil changes, payments, visits etc. Data added to the groups of schedules will be displayed on Dashboard and in the notification bell.</i></span></li><br/>
+        <li><b>🔁 Issues</b> - <span align="justify"><i>In this section You can track any ongiong/pending cases that have to be eventually resolved but it's not necessary required to keep constantly an eye on it - yet it might be required to go back one day in future to it so it allows to add subrecords of performed contacts and progress in given case</i></span></li><br/>	
         <li><b>🌴 Travels</b> - <span align="justify"> <i>Having some ideas of places to visit but without any specific plans to it? Add it to this Module with google map link and some image so you can come back to it at any moment. May the image remind you why you were interested in this particular place.</i></span></li><br/>
         <li><b>💸 Payments</b> - <span align="justify"> <i> Don't know how much money You spend on food, travels, domestic shopping? Simply from now on  add every shopping details to the list and let it do all the calculations, alongside with summary for given month. </i></span>
         <p align="justify"><i>On the other hand if you would like to keep an eye of prices for particular products you can add information about them in Products Prices submodule (which I'm personally using while being in other country - on the moment when I'm writing this).</i></p>
-	<p align="justify"><i>Here You can also keep track of who owes You some money or who You owe something to by using <b>owed money</b> submodule.</i></p>	
-	</li><br/>
-        <li><b>🛒 Shopping</b> - <span align="justify"><i>You got plans to buy something in future? Add it to the list, and then just check it out,  maybe You will be able to buy this particular thing just now.</i></span></li><br/>
+	<p align="justify"><i>Here You can also keep track of who owes You some money or who You owe something to by using <b>owed money</b> submodule.</i></p>	<p align="justify"><i><b>Bills</b> submodule allows saving information about money spent on certain things (separately from monthly payments for things like money spent on holiday etc.)</i></p></li><br/>
+	<li><b>🛒 Shopping</b> - <span align="justify"><i>You got plans to buy something in future? Add it to the list, and then just check it out,  maybe You will be able to buy this particular thing just now.</i></span></li><br/>
     <li><b>💻 Job</b> - <span align="justify"><i>The Afterhours submodule is a nice way to keep an eye of all the afterhours you've made in work. With this you can also separate specified minutes/hours for certain goal. For example you need 24h for trip and 4h to do something. Just add some time to pre existing goal, create new one or leave it blank (will go to general purpose pool). Holidays submodule is a simple way to track down how many days did You used from yearly holidays pool.</i></span> </li><br/>
     <li><b>📷 Images</b> - <span align="justify"><i>This module allows You to organize Your photos/scans/downloaded pics in form of masonry galleries. Clicking on image miniature will call lightbox gallery with possibility to rename, remove or download image. You can create as many galleries (folders) as You want.</i></span> </li><br/>	
     <li><b>📁 Files</b> - <span align="justify"><i>Files uploaded for this module are visible in form of DataTable where You can see simple information about the file - that is: extension, filetype icon (if there is one defined for given type), file size. Files can be renamed, downloaded and removed from the gui.</i></span> </li><br/>		
+    <li><b>📑 Reports</b> - <span align="justify"><i>contains readonly reports created from already existing data in database</i></span> </li><br/>		
 </ol>
 
 <h2>Preview</h2>
 
-<p align="center">Fully accessible demo can be found <a href="http://185.204.216.136:8000"><b>⇛Here⇚</b></a>.</p>
+<p align="center">Fully accessible demo can be found <a href="http://personal-management-system.pl/"><b>⇛Here⇚</b></a>.</p>
 <ul>
 	<li><b>Login:</b> admin</li>
 	<li><b>Password:</b> admin</li>
 </ul>
 <p><i><b>Info!</b> All data on demo instance is removed and <b>generated</b> each day. If the demo is not working then either someone did his best to enter some untested invalid data, or server is simply down.</i></p>
 	
-<img src="https://github.com/Volmarg/personal-management-system/blob/beta1.0/github/preview2.png?raw=true">
+	
+<img src="https://github.com/Volmarg/personal-management-system/blob/main/github/1.20_contacts.jpg?raw=true">
+
+<hr>	
+	
+<img src="https://github.com/Volmarg/personal-management-system/blob/main/github/preview2.png?raw=true">
 
 <hr>
 
-<img src="https://github.com/Volmarg/personal-management-system/blob/beta1.0/github/preview3.png?raw=true">
+<img src="https://github.com/Volmarg/personal-management-system/blob/main/github/preview3.png?raw=true">
 </div>
 
 <hr>
 
 <h2>How to install/documentation</h2>
-You can find all the informations <a href="https://volmarg.github.io"><b>⇛Here⇚</b>.
+<p>
+You can find all the informations <a href="https://volmarg.github.io"><b>⇛Here⇚</b></a>.
+</p>
+
+<h3> Linux installer </h3>
+<p>
+	The project can also be installed by simply calling <b>composer install</b> in project root folder <b>(Read the information that will popup)</b>.
+You will be guided through the autoinstaller - it won't do everything for You but will attempt to help You setting up the project.
+</p>
 
 <h2>Future development plans</h2>
 
-<h3>Modules/Extensions</h3>
-
-<ul>
-<li><b>💸 Bills</b>  (<i>Temporary name</i>) - extension for <b>Payments</b>
-	<ul>
-	<li>For saving information about money spent on certain things (<i>I want to separate monthly payments from things like money spent on holiday etc.</i>)</li>
-    </ul>
-</li>	
-<li><b>📁 Files module</b> - improvements
-	<ul>
-    	<li>Bugfixes</li>
-	<li>Handling server responses</li>	
-	<li>Moving files to other modules/folders from view of given module</li>
-    </ul>
-</li>
-<li><b>🔎 Job search</b> - (VERY future development plan, not sure if will make it at all)
-	<ul>
-    	<li>I have totally different project on laravel for searching job on portals it can be turned into module but requires bigger amount of time, so that's just an idea. I don't really need it as module - so far far on end.</li>
-	</ul>
-</li>
-</ul>
-
 <h3>Improvements</h3>
 <p>
-	<i>This things are planned for way later - first of all i need additonal working modules.</i>
+	<i>Overally I will just add some bug fixes/improvements/modules from time to time - anything that I will just need.</i>
 </p>	
-<ul>
-	<li>Better page content reload with ajax</li>
-	<li>Better CRUD for tables - preventing removing <i>td</i> subelements</li>
-	<li>Dashboard settings - which modules widgets should be displayed</li>
-	<li>Recurring payments for </b>Payments</b> module</li>
-	<li>Adding images for <b>Contacts</b> </li>
-	<li>Auto deployment - creating full working instance with one bash command </li>	
-</ul>
 <hr>
 
 <h2>Support</h2>
@@ -124,7 +108,7 @@ You can find all the informations <a href="https://volmarg.github.io"><b>⇛Here
 </ul>
 
 <p>
-	I mean for real. Just <b>Chrome</b>. I know about bug with copying password in Firefox for example. But I just do everything in Chrome so I'm not really planning to check that on other browsers. 
+	I mean for real. Just <b>Chrome</b>. I know about bug with copying password in Firefox for example. But I just do everything in Chrome so I'm not really planning to check that on other browsers. And before You ask why I only support chrome - I don't do it because of "chrome is the best" or anything like that, I just use that browser for 98% of time and that's just it.
 </p>
 
 <hr>
@@ -140,7 +124,7 @@ You can find all the informations <a href="https://volmarg.github.io"><b>⇛Here
 <li>Php 7.2.x</li>
 <li>JS</li>
 <li>JQ</li>
-<li>Symfony 4.3.2</li>
+<li>Symfony 4.4</li>
 <li>MySQL</li>
 <li>Css</li>
 <li>Scss</li>
@@ -167,5 +151,6 @@ You can find all the informations <a href="https://volmarg.github.io"><b>⇛Here
 <ul>
 	<li><a href="https://github.com/mogilvie">Mark Ogilvie</a> - for fixing EncryptBundle bugs for Symfony 4</li>
 	<li><a href="https://github.com/furcan">Furcan</a> - for adding my idea of contenteditable support for Icon Picker</li>
+	<li><a href="https://github.com/petervanderwalt">Petervanderwalt</a> - for adding fontawesome <b>js</b> version support for <a href="https://github.com/furcan/IconPicker">IconPicker</a></li>	
 </ul>
 <hr>

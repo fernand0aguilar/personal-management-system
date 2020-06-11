@@ -1,0 +1,362 @@
+user:
+  headers:
+    profileSettings: User profile settings
+    changeSettings: Change settings
+    avatarPreview: Your avatar preview
+  texts:
+    passwordDisabledForDemo: Password changing has been disabled for demo
+
+goals:
+  list:
+    headers:
+      todolist: Todo list
+  payments:
+    timeElapsed: time elapsed
+    daysLeft: days left
+    days: days
+    paymentStartsIn: Payment starts in
+  settings:
+    headers:
+      addGoal: Add goal
+      addSubgoal: Add subgoal
+      addPaymentGoal: Add payment goal
+    goalsSection:
+      table:
+        name: Name
+        description: Description
+        displayOnDashboard: Display on Dashboard
+    subGoalsSection:
+      table:
+        name: Name
+        goal: Goal
+    goalsPaymentsSection:
+      table:
+        name: Name
+        collectionStartDate: Collection start date
+        deadline: Deadline
+        moneyGoal: Money goal
+        moneyCollected: Money collected
+        displayOnDashboard: Display on dashboard
+
+notes:
+  create:
+    headers:
+      newNote: Add new note
+  category:
+    table:
+      category: Category
+      icon: Icon
+      color: Color
+      parent: Parent
+    error:
+      categoryWithThisNameOrIdExist: Category with this name or id does not exist!
+      categoryIsEmpty: The category which You've just tried to enter is empty, therefore You were redirected
+      categoryWithThisNameAlreadyExistsInThisParent: "Category with this name already exists in this parent"
+  settings:
+    headers:
+      settings:
+        label: My notes settings
+      categories:
+        label: Categories
+        editCategory: Edit categories
+        addCategory: Add category
+
+contact:
+  headers:
+    addRemove: Add/Remove contact
+  tables:
+    contact: Contact
+    description: Description
+    group: Group
+    type: Type
+  settings:
+    headers:
+      changeAddContactType: Change/Add contact type
+      changeAddContactGroup: Change/Add contact group
+    table:
+      name: Name
+      imagePath: Image path
+      preview: Preview
+      icon: Icon
+      color: Color
+
+passwords:
+  headers:
+    addRemoveCredentials: Add/Remove credentials
+  table:
+    login: Login
+    password: Password
+    url: Url
+    description: Description
+    group: Group
+  settings:
+    headers:
+      changeAddCredentialsGroup: Change/Add credentials group
+    table:
+      name: Name
+  hiddenPassword: '*****'
+
+achievements:
+  headers:
+    label: Achievements
+    addAchievement: Add achievements
+
+car:
+  settings:
+    headers:
+      changeAddCarScheduleType: Change/Add car schedule type
+  headers:
+    schedules: Schedules
+    addSchedule: Add schedule
+  legend:
+    label: Legend
+    over30: In 30 - 60 days
+    over14: In 14 -30 days
+    14: In 14 days
+  table:
+    scheduleType: Schedule type
+
+schedules:
+  settings:
+    headers:
+      changeAddScheduleType: Change/Add schedule type
+    table:
+      name: Name
+      icon: Icon
+  headers:
+    schedules: Schedules
+    addSchedule: Add schedule
+  legend:
+    label: Legend
+    over30: In 30 - 60 days
+    over14: In 14 -30 days
+    14: In 14 days
+  table:
+    scheduleType: Schedule type
+    information: Information
+    date: Date
+    name: Name
+
+travels:
+  headers:
+    ideasForTraveling: Ideas for traveling
+    addIdea: Add idea
+
+payments:
+  productsPrices:
+    headers:
+      productPrices: Products prices
+      addProduct: Add product
+    table:
+      homeCurrency: Home currency
+  moneyOwed:
+    headers:
+      owedByOthers: Money owed by others
+      owedByMe: Money owed by me
+      addRecord: Add record
+    table:
+      target: Target
+      amount: Amount
+      information: Information
+      date: Date
+      currency: Currency
+    overallSummary:
+      i: I
+      owe: Owe
+      owesMe: Owes me
+      to: To
+  incomes:
+    headers:
+      monthlyIncomes: Monthly incomes
+      addRecord: Add record
+    table:
+      amount: Amount
+      date: Date
+      currency: Currency
+      information: Information
+  monthlyPayments:
+    headers:
+      monthlyPayments: Monthly payments
+      addPayment: Add payment
+    summary: 'Monthly payments summary:'
+    table:
+      type: Type
+  bills:
+    headers:
+      billsSummaries: Bills summaries
+      bills: Bills
+    forms:
+      bills: Add bill
+    table:
+      startDate: Start date
+      endDate: End date
+      name: Name
+      information: Information
+      plannedAmount: Planned amount
+  bills_items:
+    forms:
+      bills_items: Add bill item
+    table:
+      amount: Amount
+      name: Name
+      bill: Bill
+      date: Date
+  settings:
+    headers:
+      changeAddSetting: Change/Add settings
+      currencyMultiplier: Currency multiplier
+      paymentsTypes: Payments types
+      recurringPayments: Recurring payments
+    types:
+      table:
+        name: Name
+    recurring:
+      table:
+        date: Date
+        money: Money
+        description: Description
+        type: Type
+
+reports:
+  monthlyPaymentsSummaries:
+    information: >
+      <i>This report contains summary of payments from "<b>Monthly Payments</b>" and "<b>Bills</b>" for each month.</i>
+    table:
+      monthAndYear: Month and year
+      money: Money
+  paymentsCharts:
+    information: >
+      <i>Charts based on data from payments modules</i>
+  saviingsCharts:
+    information: >
+      <i>Charts based on data from incomes/payments modules</i>
+    group: Saved
+  historicalMoneyOwed:
+    information: >
+      <i>Historical records of owed money by others and by me</i>
+  headers:
+    monthlyPaymentsSummaries: Monthly payments summaries
+    paymentsCharts: Payments charts
+    saviingsCharts: Savings charts
+    historicalMoneyOwed:
+      main: Historical money owed
+      owedByMe: Owed by me
+      owedByOthers: Owed by others
+
+
+charts:
+  headers:
+    totalPaymentsAmountForTypes: Total payments percentage for types
+    paymentsForTypesEachMonth: Payments by types for each month
+    paymentsTotalAmountForEachMonth: Payments total amount for each month
+    savingsEachMonth: Saving each month
+  paymentsForTypesEachMonth:
+    axis:
+      titles:
+        y: Amount
+        x: Month-Year
+  paymentsTotalAmountForEachMonth:
+    types:
+      withBills: With bills
+      withoutBills: Without bills
+
+datatables:
+  table:
+    idHash: '#'
+    id: Id
+    actions: Actions
+  filterByColumnValue: "Filter by column value"
+
+shopping:
+  headers:
+    plannedShoppingItems: Planned shopping items
+    addPlannedItem: Add planned item
+
+job:
+  afterhours:
+    headers:
+      allAfterhours: All afterhours
+      spentAfterhours: Spent afterhours
+      remainingAfterhours: Remaining afterhours
+      addSpendAfterhours: Add/Spend afterhours
+  holidays:
+    headers:
+      summary: Holidays summary
+      spent: Holidays spent
+      spend: Spend holidays
+
+files:
+  label: Files
+  table:
+    name: Name
+    extension: Extension
+    size: Size (mb)
+    tags: Tags
+  massActions:
+    remove: Remove files
+    transferFiles: Transfer files
+
+upload:
+  settings:
+    copyFolderData:
+      label: Copy folder data
+      from: From
+      to: To
+    renameFolder:
+      label: Rename folder
+    createFolder:
+      label: Create folder for module
+  headers:
+    uploadFiles: Upload files
+  demoText: >
+    For security reason (Demo instance) - some file types upload has been disabled.<br/>
+    You won't be informed about wrong file upload - that file will just be skipped.<br/>
+    All uploaded data will be removed couple of times a day.
+  securityTexts:
+    currentFileSize: "Selected files size:"
+    maxUploadSize: "Max upload size:"
+    currentUploadedFilesCount: "Selected files count:"
+    maxAllowedFilesUploadCount: "Max allowed files count:"
+  mb: Mb
+  uploadTable:
+    fileName: File name
+    fileExtension: File extension
+    tags: Tags
+  errors:
+    thereWasAnErrorWhileUploadingFiles: There was an error while uploading files
+
+issues:
+  card:
+    lastContactDate: "Last contact date: "
+    lastProgressDate: "Last progress date: "
+    preview:
+      headers:
+        contacts: "Contacts"
+        progress: "Progress"
+    popovers:
+      toggleDashboardVisibility: "Toggle dashboard visibility"
+      previewAndEdit: "Preview and edit"
+      addRecords: "Add records"
+      removeRecord: "Remove record"
+    ajaxCallMessages:
+      dashboardVisibilityHasBeenToggled: "Dashboard visibility has been toggled"
+  contactsTable:
+    icon: Icon
+    date: Date
+    information: Information
+    actions: Actions
+
+other:
+  summary: Summary
+  overallSummary: Overall summary
+
+actions:
+  popover:
+    edit: Edit
+    editWithTinyMce: Edit with TinyMCE
+    remove: Remove
+    fontawesome: Pick fontawesome icon
+    copy: Copy
+    save: Save
+    lockRecord: Lock record
+    download_file_subdirectory: Download

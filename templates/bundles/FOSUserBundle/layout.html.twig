@@ -1,11 +1,12 @@
-{% trans_default_domain 'FOSUserBundle' %}
-
+{% set currUrl = path(app.request.attributes.get('_route'),
+  app.request.attributes.get('_route_params')) %}
+{% set getAttrs = app.request.attributes.get('_route_params') %}
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-  <title>Sign In</title>
+  <title>{{ 'login.pageTitle' | trans }}</title>
   <link rel="stylesheet" href="{{ asset('assets/app.css') }}" />
   <style>
     #loader {
@@ -55,6 +56,12 @@
         }
     }
   </style>
+
+  <script>
+    var TWIG_GET_ATTRS      = '{{ getAttrs | json_encode | raw }}';
+    var TWIG_ROUTE          = '{{ app.request.attributes.get('_route') }}';
+    var TWIG_REQUEST_URI    = '{{ app.request.requestUri }}';
+  </script>
 </head>
 <body class="app">
 <div id='loader'>

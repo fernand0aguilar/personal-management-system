@@ -1,0 +1,17 @@
+lightgallery:
+  headers:
+    images: Images
+  labels:
+    tags: Tags
+    search: Search
+
+dashboard:
+  widgets:
+    incoming-schedules:
+      label: Schedules
+    my-goals-payments:
+      label: Goals payments
+    my-goals:
+      label: Goals progress
+    pending-issues:
+      label: Pending issues

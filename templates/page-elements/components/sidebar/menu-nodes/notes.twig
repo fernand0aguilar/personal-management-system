@@ -1,11 +1,11 @@
-<li class="nav-item dropdown {{ keepMenuOpen(currUrl, '', 'my-notes') }}">
+<li class="nav-item dropdown {{ keepMenuOpen(currUrl, '', 'my-notes') }} sidebar-menu-node-element" data-menu-node-name="{{ MENU_NODE_MODULE_NAME_NOTES }}">
     <a class="sidebar-link" href="javascript:void(0);">
                 <span class="icon-holder" style="color:violet;">
-                    <i class="fas fa-book"></i>
+                    <i class="fas fa-book fa-sm"></i>
                 </span>
-        <span class="title">My notes</span>
+        <span class="title">{{  'sidebar.menu.notes.label' | trans }}</span>
         <span class="arrow">
-                    <i class="ti-angle-right"></i>
+                    <i class="ti-angle-right fa-sm"></i>
                   </span>
     </a>
 
@@ -14,21 +14,21 @@
         <li>
             <a class="sidebar-link" href="{{ path('my-notes-create') }}">
                 <span class="icon-holder" style="color:violet;">
-                    <i class="fas fa-plus-circle"></i>
+                    <i class="fas fa-plus-circle fa-sm"></i>
                 </span>
-                Create new
+                {{  'sidebar.menu.notes.new' | trans }}
             </a>
         </li>
         <li>
             <a class="sidebar-link" href="{{ path('my-notes-settings') }}">
                 <span class="icon-holder" style="color:violet;">
-                    <i class="fas fa-cog"></i>
+                    <i class="fas fa-cog fa-sm"></i>
                 </span>
-                Settings
+                {{  'sidebar.menu.notes.settings' | trans }}
             </a>
         </li>
 
-        {% set categories = getMyNotesCategories() %}
+        {% set categories = getAccessibleNotesCategories() %}
         {% include 'page-elements/components/sidebar/menu-nodes/notes-categories.twig' with {
             'elements': categories,
             'path_name': 'my-notes-category'

@@ -119,3 +119,24 @@ h3{
 .dataTables_wrapper {
   width: 100%;
 }
+
+.dataTable tbody tr td .checkbox label::before,
+.dataTable tbody tr td .checkbox label::after{
+  left: inherit !important;
+}
+
+/* Other */
+.spaceless-hr {
+  padding-bottom: 4px;
+  padding-top: 4px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+form legend{
+  font-size: 13px;
+}

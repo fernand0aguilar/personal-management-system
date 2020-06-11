@@ -17,20 +17,48 @@
 
                 <td
                         class="{{ column }} {%  if column == 'type' or column == id_column  %}d-none{% endif %}"
-                        data-order="{% if timestamp is defined %}{{ timestamp }}{% endif %}"
+
+                        data-order="
+
+                        {% if column == "date" %}
+
+                            {% if timestamp is defined %}
+                                {{ timestamp }}
+                            {% endif %}
+
+                        {% elseif column == "minutes" %}
+                            {{ attribute(afterhour,column) }}
+                        {% endif %}
+
+                        "
                 >
                     {% if column == 'date' %}
-                        {{ attribute(afterhour,column)|date('d-m-Y') }}
+                        <span class="{{ column }} ">
+                            {% include 'page-elements/components/forms/input-datepicker.twig' with {
+                                "value"     : attribute(afterhour,column)|date('Y-m-d') ,
+                                "disabled"  : true
+                            } %}
+                        </span>
+                    {% elseif column == "minutes" %}
+                        {% include 'page-elements/components/forms/input-standard-value.twig' with {
+                            type     : "number",
+                            value    : attribute(afterhour,column),
+                            disabled : true,
+                            min      : 1,
+                            attrs    : "data-validate-form-element=true"
+                        }%}
                     {% else %}
                         {{ attribute(afterhour,column) }}
                     {% endif %}
                 </td>
             {% endfor %}
-            <td contenteditable="false">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <i class="far fa-edit"></i>
-                <i class="far fa-save d-none"></i>
-            </td>
+
+            {% include 'modules/common/components/table-cells/actions.html.twig' with {
+                "trash": true,
+                "edit": true,
+                "save": true
+            } %}
+
         </tr>
     {% endfor %}
     </tbody>
